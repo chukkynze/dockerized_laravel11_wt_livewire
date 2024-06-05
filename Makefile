@@ -12,12 +12,7 @@ clean:
 
 clean_mysql:
 	@echo 'Clean: MySQL'
-	rm -Rf volumes/data/mysql/storage/persist/*
 	(cd volumes/data/mysql/storage/persist/ && find . ! -name '*.gitkeep' -type f -exec rm -f {} +)
-
-clean_meilisearch:
-	@echo 'Clean: Meilisearch'
-	rm -Rf volumes/data/meilisearch/storage/persist/*
 
 clean_docker:
 	@echo 'Clean: Docker'
@@ -49,10 +44,6 @@ boot_bg_clean: clean boot_bg
 
 # Host Device Commands
 ####################################################
-setup_rev_proxy:
-	@echo 'Install and Setup Nginx on Host for Reverse Proxies'
-	./workflow.sh tasks host setup_rev_proxy ${DEVICE_HOST_USERNAME} ${WEBAPP_NGINX_PORT}
-
 test:
 	@echo 'Testing Environment'
 	./workflow.sh tasks test_env

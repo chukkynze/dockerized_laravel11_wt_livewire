@@ -130,33 +130,20 @@ Include any instructions on how to set up & deploy the web application in your R
 
 
 ### 3. Environment Configurations
-* Accessing each site from the host is governed by a nginx reverse proxy server running on the host that should now be
-  already installed and configured using the stub at `stubs/rev_proxy_nginx.conf.stub`.
-* Each repo is configured using `.env` files. Go through each repo and ensure that the `.env` file for each project
-  has the proper values before continuing.
-* Add this line to your `/etc/hosts`
-  ```
-  127.0.0.1 local.bysavi.test local-partner.bysavi.test local-partner1.bysavi.test local-partner2.bysavi.test local-crisis.bysavi.test
-  ```
-  You can add other partners as well
-
-
-* In each repo **that is already configured to work with your environment**, there should be an `.env.environment` file.
-  Tweak the default values to your liking. There should also be a environment folder. Your environment will copy bash and other files there
-  to perform certain tasks. Don't delete that folder or the .gitignore file within.
-
-* When you have each repo's config files sufficiently ready, cd back into your environment `cd ~/chukkys-code/environment` and run:
+* cd into your environment `cd ~/chukkys-code/environment` and run:
   ```    
   make boot_clean
   ```
 
-  ````
+  ```
   TIP:
   Personally, I would run the above `make boot_clean` command in its own terminal or tab (IDE or device terminal) and leave it alone. 
   This will continuously output the stdout and stderr for all the containers in the environment. It is great for 
   debuggin live issues, but it very noisy. I just run it in it's own tab and go about my work some where else.
-  But, that's just me. You also have the option to run it in the background with 
-  
+  But, that's just me. You also have the option to run it in the background with
+  ```
+
+  ````
   make boot_bg_clean
   ````
 

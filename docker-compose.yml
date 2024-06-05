@@ -15,7 +15,7 @@ services:
       context: ./services/webapp
       dockerfile: nginx124_php83_node20.dockerfile
       args:
-        - XDEBUG_HOST_IP=${YOUR_HOST_IP}
+        - XDEBUG_HOST_IP=${DEVICE_HOST_IP}
         - GIT_USERNAME=${GIT_USERNAME}
         - GIT_EMAIL=${GIT_EMAIL}
     volumes:
