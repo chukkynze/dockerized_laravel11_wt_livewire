@@ -67,17 +67,13 @@ webapp_setup:
 fresh_install:
 	@echo '==============================================='
 	@echo 'Fresh Install of the Dev Environment for ${DEVICE_USER_FULL_NAME}.'
-	@echo 'This is potentially DESTRUCTIVE for all your Savi Projects under this environment.'
+	@echo 'This is potentially DESTRUCTIVE for all your Projects under this environment.'
+	@echo '==============================================='
+	@echo 'Backing up'
 	@echo '==============================================='
 	@printf '\n'
-	@echo 'Install and Setup Nginx on Host for Reverse Proxies'
-	./workflow.sh tasks host setup_rev_proxy ${DEVICE_HOST_USERNAME} ${EMP_ADMIN_WEB_NGINX_PORT}
-	@echo '==============================================='
-	@echo 'Backing up, then deleting the contents of the repositories folder except for the git and IDE files.'
-	@echo '==============================================='
-	@printf '\n'
-	mkdir -p volumes/workspace_bkp
-	cp -a volumes/workspace/. volumes/workspace_bkp/
+	mkdir -p volumes/webapp_backup
+	cp -a volumes/webapp/. volumes/webapp_backup/
 	rm -rf volumes/workspace/*
 	rm -rf devops
 	touch volumes/workspace/.gitkeep
