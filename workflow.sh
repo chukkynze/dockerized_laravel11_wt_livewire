@@ -20,9 +20,9 @@ source ./shell/general/functions.sh
 #
 if [[ $# -gt 0 ]]; then
 
-      if [[ "$1" == "docker" ]]; then
+    if [[ "$1" == "docker" ]]; then
 
-          if [[ "$2" == "config" ]]; then
+        if [[ "$2" == "config" ]]; then
 
             docker-compose --env-file="$DEFAULT_DOCKER_COMPOSE_ENV_FILE" config
 
@@ -36,29 +36,29 @@ if [[ $# -gt 0 ]]; then
 
         elif [[ "$2" == "clean" ]]; then
 
-              if [[ "$3" == "all" ]]; then
+            if [[ "$3" == "all" ]]; then
 
                 echo "Complete clean started..."
-                      docker-compose --env-file="$DEFAULT_DOCKER_COMPOSE_ENV_FILE" down \
-                      && docker system prune -f \
-                      && docker volume prune -f \
-                      && docker ps -a \
-                      && docker-compose --env-file="$DEFAULT_DOCKER_COMPOSE_ENV_FILE" ps \
-                      && rm -Rf volumes/data/mysql/storage/persist/*
+                docker-compose --env-file="$DEFAULT_DOCKER_COMPOSE_ENV_FILE" down \
+                && docker system prune -f \
+                && docker volume prune -f \
+                && docker ps -a \
+                && docker-compose --env-file="$DEFAULT_DOCKER_COMPOSE_ENV_FILE" ps \
+                && (cd volumes/data/mysql/storage/persist/ && find . ! -name '*.gitkeep' -type f -exec rm -f {} +)
 
             elif [[ "$3" == "containers" ]]; then
 
                 echo "Container cleaning started..."
-                    # shellcheck disable=SC2046
-                    docker rm $(docker ps -aq) -f
-                    docker ps -a
+                # shellcheck disable=SC2046
+                docker rm $(docker ps -aq) -f
+                docker ps -a
 
             elif [[ "$3" == "images" ]]; then
 
                 echo "Image cleaning started..."
-                    # shellcheck disable=SC2046
-                    docker rmi $(docker images -aq) -f
-                    docker images -a
+                # shellcheck disable=SC2046
+                docker rmi $(docker images -aq) -f
+                docker images -a
 
             fi
 
