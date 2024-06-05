@@ -73,12 +73,7 @@ webapp_setup:
 
 # Environment Commands
 ####################################################
-cbcl_prep_fresh_install:
-	@echo 'Setting up env file.'
-	cp -a -n .env.docker-compose.example .env.docker-compose
-
-
-cbcl_fresh_install:
+fresh_install:
 	@echo '==============================================='
 	@echo 'Fresh Install of the Dev Environment for ${DEVICE_USER_FULL_NAME}.'
 	@echo 'This is potentially DESTRUCTIVE for all your Savi Projects under this environment.'
