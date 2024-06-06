@@ -12,7 +12,8 @@ clean:
 
 clean_mysql:
 	@echo 'Clean: MySQL'
-	(cd volumes/data/mysql/storage/persist/ && find . ! -name '*.gitkeep' -type f -exec rm -f {} +)
+	sudo chown -R ${DEVICE_HOST_USERNAME}:${DEVICE_HOST_USERNAME} volumes/data/mysql/storage/persist
+	rm -Rf volumes/data/mysql/storage/persist/*
 
 clean_docker:
 	@echo 'Clean: Docker'
@@ -37,9 +38,9 @@ boot_bg:
 	./workflow.sh docker config
 	./workflow.sh docker up-d
 
-boot_clean: clean boot
+boot_clean: clean_mysql clean boot
 
-boot_bg_clean: clean boot_bg
+boot_bg_clean: clean_mysql clean boot_bg
 
 
 # Host Device Commands

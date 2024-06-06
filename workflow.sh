@@ -43,8 +43,7 @@ if [[ $# -gt 0 ]]; then
                 && docker system prune -f \
                 && docker volume prune -f \
                 && docker ps -a \
-                && docker-compose --env-file="$DEFAULT_DOCKER_COMPOSE_ENV_FILE" ps \
-                && (cd volumes/data/mysql/storage/persist/ && find . ! -name '*.gitkeep' -type f -exec rm -f {} +)
+                && docker-compose --env-file="$DEFAULT_DOCKER_COMPOSE_ENV_FILE" ps
 
             elif [[ "$3" == "containers" ]]; then
 
