@@ -5,7 +5,6 @@ A very simple Laravel web application for project & task management:
 - Create Project (info to save: project name, start & due dates, priority, timestamps)
 - Edit Project
 - Mark Project deleted
-- Archive Project
 - Destroy Project
 - Reorder Projects with drag and drop in the browser.
     - Priority should automatically be updated based on this.
@@ -14,7 +13,6 @@ A very simple Laravel web application for project & task management:
 - Create task (info to save: task name, status, priority, timestamps)
 - Edit task
 - Mark task deleted
-- Archive task
 - Destroy task
 - Reorder tasks with drag and drop in the browser.
     - Priority should automatically be updated based on this.

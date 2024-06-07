@@ -1,6 +1,5 @@
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
 
-
 -- local dbuser
 DROP USER dbuser;
 FLUSH PRIVILEGES;
