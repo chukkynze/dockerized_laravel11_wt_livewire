@@ -20,6 +20,8 @@ return new class extends Migration
 
             $table->string('name');
             $table->unsignedInteger('priority')->index();
+            $table->unsignedInteger('type_id')->index();
+            $table->unsignedInteger('status_id')->index();
             $table->json('metadata');
 
             $table->timestamps();

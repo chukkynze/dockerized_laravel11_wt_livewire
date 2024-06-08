@@ -24,26 +24,26 @@ if [[ $# -gt 0 ]]; then
 
         if [[ "$2" == "config" ]]; then
 
-            docker-compose --env-file="$DEFAULT_DOCKER_COMPOSE_ENV_FILE" config
+            docker compose --env-file="$DEFAULT_DOCKER_COMPOSE_ENV_FILE" config
 
         elif [[ "$2" == "up" ]]; then
 
-            docker-compose --env-file="$DEFAULT_DOCKER_COMPOSE_ENV_FILE" up --force-recreate
+            docker compose --env-file="$DEFAULT_DOCKER_COMPOSE_ENV_FILE" up --force-recreate
 
         elif [[ "$2" == "up-d" ]]; then
 
-            docker-compose --env-file="$DEFAULT_DOCKER_COMPOSE_ENV_FILE" up --force-recreate -d
+            docker compose --env-file="$DEFAULT_DOCKER_COMPOSE_ENV_FILE" up --force-recreate -d
 
         elif [[ "$2" == "clean" ]]; then
 
             if [[ "$3" == "all" ]]; then
 
                 echo "Complete clean started..."
-                docker-compose --env-file="$DEFAULT_DOCKER_COMPOSE_ENV_FILE" down \
+                docker compose --env-file="$DEFAULT_DOCKER_COMPOSE_ENV_FILE" down \
                 && docker system prune -f \
                 && docker volume prune -f \
                 && docker ps -a \
-                && docker-compose --env-file="$DEFAULT_DOCKER_COMPOSE_ENV_FILE" ps
+                && docker compose --env-file="$DEFAULT_DOCKER_COMPOSE_ENV_FILE" ps
 
             elif [[ "$3" == "containers" ]]; then
 
@@ -83,7 +83,7 @@ if [[ $# -gt 0 ]]; then
             printf "\n"
             printf "Docker Compose Stats \n"
             printf "============================================ \n"
-            docker-compose --env-file="$DEFAULT_DOCKER_COMPOSE_ENV_FILE" ps || true
+            docker compose --env-file="$DEFAULT_DOCKER_COMPOSE_ENV_FILE" ps || true
             printf "\n"
             printf "Docker Stats: System & Hard drive \n"
             printf "============================================ \n"

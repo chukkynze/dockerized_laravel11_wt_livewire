@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
- *
+ * 
  *
  * @property int $id
  * @property string|null $uuid
@@ -48,6 +48,8 @@ class Task extends Model
     use HasFactory,
         SoftDeletes
         ;
+
+    protected $table = 'tasks';
 
 
     public function getId(): int

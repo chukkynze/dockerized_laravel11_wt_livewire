@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -17,11 +19,13 @@ use Illuminate\Support\Carbon;
  * @property string|null $uuid
  * @property string $name
  * @property int $priority
+ * @property int $type_id
+ * @property int $status_id
  * @property string $metadata
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- * @property-read Collection<int, \App\Models\Task> $tasks
+ * @property-read Collection<int, Task> $tasks
  * @property-read int|null $tasks_count
  * @method static Builder|Project newModelQuery()
  * @method static Builder|Project newQuery()
@@ -33,17 +37,23 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Project whereMetadata($value)
  * @method static Builder|Project whereName($value)
  * @method static Builder|Project wherePriority($value)
+ * @method static Builder|Project whereStatusId($value)
+ * @method static Builder|Project whereTypeId($value)
  * @method static Builder|Project whereUpdatedAt($value)
  * @method static Builder|Project whereUuid($value)
  * @method static Builder|Project withTrashed()
  * @method static Builder|Project withoutTrashed()
- * @mixin \Eloquent
+ * @method static Builder|Project search($string)
+ * @method static Builder|Project paginate($number)
+ * @mixin Eloquent
  */
 class Project extends Model
 {
     use HasFactory,
         SoftDeletes
         ;
+
+    protected $table = 'projects';
 
 
     public function getId(): int
@@ -79,6 +89,31 @@ class Project extends Model
     public function setPriority(int $priority): void
     {
         $this->priority = $priority;
+    }
+
+    public function getType(): int
+    {
+        return $this->type_id;
+    }
+
+    public function getTypeId(): int
+    {
+        return $this->type_id;
+    }
+
+    public function setTypeId(int $type_id): void
+    {
+        $this->type_id = $type_id;
+    }
+
+    public function getStatusId(): int
+    {
+        return $this->status_id;
+    }
+
+    public function setStatusId(int $status_id): void
+    {
+        $this->status_id = $status_id;
     }
 
     public function getMetadata(): string
@@ -143,5 +178,20 @@ class Project extends Model
     public function tasks(): HasMany
     {
         return $this->hasMany(Task::class);
+    }
+
+    public function type(): HasOne
+    {
+        return $this->hasOne(ProjectType::class, 'id', 'type_id');
+    }
+
+    public function status(): HasOne
+    {
+        return $this->hasOne(ProjectStatus::class, 'id', 'status_id');
+    }
+
+    public function scopeSearch($query, $value): void
+    {
+        $query->where('name', 'like', "%$value%");
     }
 }
