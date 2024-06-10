@@ -13,14 +13,6 @@
         <script src="https://cdn.tailwindcss.com"></script>
     </head>
     <body class="font-sans antialiased dark:bg-black dark:text-white/50">
-        <ul>
-            <li>Project Task Manager</li>
-            <li>
-                <ul>
-                    <li><a href="{{ url("/projects") }}">Projects</a></li>
-                    <li><a href="{{ url("/tasks") }}">Tasks</a></li>
-                </ul>
-            </li>
-        </ul>
+        @livewire('projects-datatable')
     </body>
 </html>

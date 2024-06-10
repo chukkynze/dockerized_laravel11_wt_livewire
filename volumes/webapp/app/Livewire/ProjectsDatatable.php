@@ -18,12 +18,16 @@ class ProjectsDatatable extends Component
 
     #[Url]
     public int $perPage = 5;
+
     #[Url(history:true)]
     public string $search = '';
+
     public int $projectType = 0;
     public int $projectStatus = 0;
+
     #[Url(history:true)]
     public string $sortDirection = 'desc';
+
     #[Url(history:true)]
     public string $sortBy = 'created_at';
 

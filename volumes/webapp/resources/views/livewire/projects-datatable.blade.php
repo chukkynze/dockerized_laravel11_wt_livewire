@@ -1,4 +1,3 @@
-@php use App\Enums\ProjectStatus; @endphp
 <div>
     <section class="mt-10">
         <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
