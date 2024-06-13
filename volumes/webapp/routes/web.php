@@ -10,6 +10,14 @@ Route::get('/projects', function () {
     return view('projects');
 });
 
-Route::get('/project/{uuid}/tasks', function () {
+Route::get('/projects/create', function () {
+    return view('project-create');
+});
+
+Route::get('/tasks', function () {
+    return view('tasks');
+});
+
+Route::get('/projects/{uuid}/tasks', function () {
     return view('project');
 });

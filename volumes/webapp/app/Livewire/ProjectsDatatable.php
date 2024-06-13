@@ -2,9 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Models\Project;
-use App\Models\ProjectStatus;
-use App\Models\ProjectType;
+use App\Services\ProjectService;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
@@ -20,16 +18,16 @@ class ProjectsDatatable extends Component
     public int $perPage = 5;
 
     #[Url(history:true)]
-    public string $search = '';
-
-    public int $projectType = 0;
-    public int $projectStatus = 0;
+    public string $searchTerm = '';
 
     #[Url(history:true)]
     public string $sortDirection = 'desc';
 
     #[Url(history:true)]
     public string $sortBy = 'created_at';
+
+    public int $projectTypeId = 0;
+    public int $projectStatusId = 0;
 
     public function updatedSearch(): void
     {
@@ -47,31 +45,58 @@ class ProjectsDatatable extends Component
         $this->sortDirection = 'desc';
     }
 
-    public function delete(string $uuid): void
+    public function edit(string $uuid): void
     {
-        if (Project::whereUuid($uuid)->exists()) {
-            Project::whereUuid($uuid)->delete();
+        dd($uuid);
+    }
+
+    public function markDeleted(ProjectService $projectService, string $uuid): void
+    {
+        $this->reset();
+
+        if($projectService->projectExistsInTable($uuid))
+        {
+            $serviceResponse = $projectService->markProjectDeleted($uuid);
+
+            if ($serviceResponse->getStatus()) {
+                session()->flash(
+                    'success',
+                    "Your project, \"{$serviceResponse->getData()['model']->getName()}\", has been successfully deleted."
+                );
+            }
+            else {
+                session()->flash(
+                    'failure',
+                    "Your project, \"{$serviceResponse->getData()['model']->getName()}\", was not deleted."
+                );
+            }
+        }
+        else {
+            session()->flash(
+                'failure',
+                "The project was not found."
+            );
         }
     }
 
 
     /**
+     * @param ProjectService $projectService
      * @return Factory|Application|View|\Illuminate\Contracts\Foundation\Application
      */
-    public function render(): Factory|Application|View|\Illuminate\Contracts\Foundation\Application
+    public function render(ProjectService $projectService): Factory|Application|View|\Illuminate\Contracts\Foundation\Application
     {
         return view('livewire.projects-datatable', [
-            'projects' => Project::search($this->search)
-                ->when($this->projectType !== 0, function ($query){
-                    $query->where('type_id', $this->projectType);
-                })
-                ->when($this->projectStatus !== 0, function ($query){
-                    $query->where('status_id', $this->projectStatus);
-                })
-                ->orderBy($this->sortBy, $this->sortDirection)
-                ->paginate($this->perPage),
-            'projectTypes' => ProjectType::all(),
-            'projectStatuses' => ProjectStatus::all(),
+            'projects' => $projectService->getPaginatedProjectsForLivewireComponent(
+                $this->searchTerm,
+                $this->projectTypeId,
+                $this->projectStatusId,
+                $this->perPage,
+                $this->sortBy,
+                $this->sortDirection
+            ),
+            'projectTypes' => $projectService->getAllProjectTypes()->getData()['model'],
+            'projectStatuses' => $projectService->getAllProjectStatuses()->getData()['model'],
         ]);
     }
 }

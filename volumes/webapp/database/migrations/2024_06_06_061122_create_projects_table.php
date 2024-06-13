@@ -15,14 +15,12 @@ return new class extends Migration
     {
         Schema::dropIfExists($this->tableName);
         Schema::create($this->tableName, function (Blueprint $table) {
-            $table->increments('id')->unsigned();
-            $table->uuid()->nullable()->unique();
+            $table->increments('id')->unsigned()->primary();
+            $table->uuid()->unique();
 
             $table->string('name');
-            $table->unsignedInteger('priority')->index();
             $table->unsignedInteger('type_id')->index();
             $table->unsignedInteger('status_id')->index();
-            $table->json('metadata');
 
             $table->timestamps();
             $table->softDeletes();

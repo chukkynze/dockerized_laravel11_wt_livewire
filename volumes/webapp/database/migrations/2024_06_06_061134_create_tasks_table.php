@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::dropIfExists($this->tableName);
         Schema::create($this->tableName, function (Blueprint $table) {
-            $table->increments('id')->unsigned();
-            $table->uuid()->nullable()->unique();
+            $table->increments('id')->unsigned()->primary();
+            $table->uuid()->unique();
 
             $table->unsignedInteger('project_id');
 
@@ -24,7 +24,6 @@ return new class extends Migration
             $table->unsignedInteger('priority')->index();
             $table->dateTime('start_dt')->default(date('Y-m-d h:i:s', strtotime('now')));
             $table->dateTime('end_dt')->default(date('Y-m-d h:i:s', strtotime('+1 week')));
-            $table->json('metadata');
 
             $table->timestamps();
             $table->softDeletes();

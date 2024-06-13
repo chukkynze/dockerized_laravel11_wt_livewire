@@ -2,6 +2,10 @@
 
 namespace App\Models;
 
+use App\Exceptions\SetNotAllowedException;
+use App\Traits\Models\CustomUuids;
+use Database\Factories\TaskFactory;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,17 +17,17 @@ use Illuminate\Support\Carbon;
  * 
  *
  * @property int $id
- * @property string|null $uuid
+ * @property string $uuid
  * @property int $project_id
  * @property string $name
  * @property int $priority
  * @property string $start_dt
  * @property string $end_dt
- * @property string $metadata
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
  * @property-read \App\Models\Project $project
+ * @method static \Database\Factories\TaskFactory factory($count = null, $state = [])
  * @method static Builder|Task newModelQuery()
  * @method static Builder|Task newQuery()
  * @method static Builder|Task onlyTrashed()
@@ -32,7 +36,6 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Task whereDeletedAt($value)
  * @method static Builder|Task whereEndDt($value)
  * @method static Builder|Task whereId($value)
- * @method static Builder|Task whereMetadata($value)
  * @method static Builder|Task whereName($value)
  * @method static Builder|Task wherePriority($value)
  * @method static Builder|Task whereProjectId($value)
@@ -41,11 +44,12 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Task whereUuid($value)
  * @method static Builder|Task withTrashed()
  * @method static Builder|Task withoutTrashed()
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 class Task extends Model
 {
     use HasFactory,
+        CustomUuids,
         SoftDeletes
         ;
 
@@ -62,9 +66,12 @@ class Task extends Model
         return $this->uuid;
     }
 
+    /**
+     * @throws SetNotAllowedException
+     */
     public function setUuid(?string $uuid): void
     {
-        $this->uuid = $uuid;
+        throw new SetNotAllowedException("Cannot set the uuid as '$uuid'. Uuid's are set by the framework");
     }
 
     public function getProjectId(): int
@@ -115,16 +122,6 @@ class Task extends Model
     public function setEndDt(string $end_dt): void
     {
         $this->end_dt = $end_dt;
-    }
-
-    public function getMetadata(): string
-    {
-        return $this->metadata;
-    }
-
-    public function setMetadata(string $metadata): void
-    {
-        $this->metadata = $metadata;
     }
 
     public function getCreatedAt(): ?Carbon

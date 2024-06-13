@@ -26,11 +26,9 @@ class ProjectFactory extends Factory
 
         return [
             'name' => fake()->company() . ' ' . $typeName[$statusId] . ' Project',
-            'uuid' => fake()->uuid(),
-            'priority' => fake()->numberBetween(1,10),
+            //'uuid' => fake()->uuid(),
             'type_id' => fake()->numberBetween(1,3),
             'status_id' => $statusId,
-            'metadata' => json_encode([]),
             'created_at' => $now,
             'updated_at' => $now,
             'deleted_at' => null,
