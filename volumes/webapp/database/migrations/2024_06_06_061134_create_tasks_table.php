@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('name');
             $table->unsignedInteger('priority')->index();
             $table->dateTime('start_dt')->default(date('Y-m-d h:i:s', strtotime('now')));
-            $table->dateTime('end_dt')->default(date('Y-m-d h:i:s', strtotime('+1 week')));
+            $table->dateTime('due_by_dt')->default(date('Y-m-d h:i:s', strtotime('+1 week')));
 
             $table->timestamps();
             $table->softDeletes();

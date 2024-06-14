@@ -1,7 +1,6 @@
 <div>
     <section class="mt-10">
         <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
-            <!-- Start coding here -->
             <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
                 <div class="flex items-center justify-between d p-4">
                     <div class="flex">
@@ -99,11 +98,9 @@
                                         ])
                                 </button>
                             </th>
-
                             <th scope="col" class="px-4 py-3">type</th>
                             <th scope="col" class="px-4 py-3">status</th>
                             <th scope="col" class="px-4 py-3" wire:click="setSortBy('num tasks')">tasks</th>
-
                             <th scope="col" class="px-4 py-3" wire:click="setSortBy('created_at')">
                                 <button class="flex items-center uppercase">
                                     began
@@ -131,18 +128,24 @@
                                 <th scope="row"
                                     class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {{ $project->getName() }}</th>
-                                <td class="px-4 py-3">{{ $project->type->getDisplayName() }}</td>
+                                <td class="px-4 py-3 items-center">{{ $project->type->getDisplayName() }}</td>
                                 @if($project->status->getDisplayName() == 'Done')
-                                    <td class="px-4 py-3 text-green-500">
+                                    <td class="px-4 py-3 items-center text-green-500">
                                 @elseif($project->status->getDisplayName() == 'In Progress')
-                                    <td class="px-4 py-3 text-blue-500">
+                                    <td class="px-4 py-3 items-center text-blue-500">
                                 @else
-                                    <td class="px-4 py-3 text-red-500">
+                                    <td class="px-4 py-3 items-center text-red-500">
                                 @endif
                                     {{$project->status->getDisplayName()}}</td>
-                                <td class="px-4 py-3 text-green-500">{{$project->tasks->count()}}</td>
-                                <td class="px-4 py-3">{{$project->getCreatedAt()->format('M d, Y')}}</td>
-                                <td class="px-4 py-3 items-center">{{$project->getUpdatedAt()->format('M d, Y')}}</td>
+                                <td class="px-4 py-3 items-center text-green-500">{{$project->tasks->count()}}</td>
+                                <td class="px-4 py-3 items-center">
+                                    <div>{{ $project->getCreatedAt()->format('M d, Y') }}</div>
+                                    <div>{{ $project->getCreatedAt()->format('h:i:s') }}</div>
+                                </td>
+                                <td class="px-4 py-3 items-center">
+                                    <div>{{ $project->getUpdatedAt()->format('M d, Y') }}</div>
+                                    <div>{{ $project->getUpdatedAt()->format('h:i:s') }}</div>
+                                </td>
                                 <td class="px-4 py-3 flex items-center justify-end">
                                     <button  wire:click="edit('{{$project->getUuid()}}')"
                                              class="px-3 py-1 bg-blue-500 text-white rounded">

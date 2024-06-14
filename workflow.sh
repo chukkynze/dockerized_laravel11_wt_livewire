@@ -121,19 +121,11 @@ if [[ $# -gt 0 ]]; then
 
         if [[ "$2" == "webapp" ]]; then
 
-            # Remove project specific setup files from project
-            rm -rfv "$ENVIRONMENT_ABS_FOLDER_PATH""$WEBAPP_REPO"/ecosystem/data/ || true
-            rm -rfv "$ENVIRONMENT_ABS_FOLDER_PATH""$WEBAPP_REPO"/ecosystem/scripts/ || true
-
-            # Copy new setup files from ecosystem to project
-            cp -v -r "$ENVIRONMENT_ABS_FOLDER_PATH"/services/webapp/ecosystem/* "$ENVIRONMENT_ABS_FOLDER_PATH""$WEBAPP_REPO"/ecosystem
-
             # Set file permissions
-            docker exec -it -w /var/www/html webapp chmod ugo+x ecosystem/scripts/setup.sh
+            docker exec -it -w /var/www/html webapp bash file_permissions.sh
 
             # Run setup scripts
-            docker exec -it -w /var/www/html webapp bash ecosystem/scripts/setup.sh
-            # docker exec -it -w /var/www/html webapp chmod ugo+x cubicle/scripts/setup_telescope.sh
+            docker exec -it -w /var/www/html webapp bash build.sh local
 
         fi
 

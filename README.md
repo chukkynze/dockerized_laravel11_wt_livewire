@@ -5,16 +5,11 @@ A very simple Laravel web application for project & task management:
 - Create Project (info to save: project name, start & due dates, priority, timestamps)
 - Edit Project
 - Mark Project deleted
-- Destroy Project
-- Reorder Projects with drag and drop in the browser.
-    - Priority should automatically be updated based on this.
-    - #1 priority goes at top, #2 next down and so on.
 - Projects should be saved to a mysql table.
 - Create task (info to save: task name, status, priority, timestamps)
 - Edit task
 - Mark task deleted
-- Destroy task
-- Reorder tasks with drag and drop in the browser.
+- (In progress) Reorder tasks with drag and drop in the browser.
     - Priority should automatically be updated based on this.
     - #1 priority goes at top, #2 next down and so on.
 - Tasks should be saved to a mysql table.
@@ -149,15 +144,8 @@ Include any instructions on how to set up & deploy the web application in your R
 This will launch your entire codebase setup in a virtual environment that we will call `guest`. Your actual device is still the `host`.
 * Note: `boot_clean` is designed to wipe out all previous docker setups, create new ones, and log the entire environment activity out to
   the screen. It may go crazy for a while (about 30 minutes). No worries. It's expected, and you won't be using this command a lot.
-* When `boot_clean` (or `boot_bg_clean`) is done running, go to `http://127.0.0.1:8181/` or `http://local.bysavi.test/` and you should see raw php errors.
-  ````
-  TIP:
-  There is a handy chrome plugin for all of the urls needed to access the services in your environment. To install it in your Chrome browser, follow these steps:
-  - Go to chrome://extensions/ in your browser
-  - Click the "Load unpacked" buttom at the top left. A folder selection dialog box will open
-  - Go to the "third_party/chrome plugin/app" folder and select it. It is now loaded
-  - In your browser plugin section, you can now pin the plugin and use as needed
-  ````
+* When `boot_clean` (or `boot_bg_clean`) is done running, go to `http://localhost:8080/` and you should see XXXXXXXX.
+
 
 ***
 
@@ -166,71 +154,6 @@ This will launch your entire codebase setup in a virtual environment that we wil
 When `make boot_clean` is done, you will see different colored output logs on your screen for the different services that are
 running (mainly for grafana). Open a new terminal/tab, still on your `host`, cd into your environment: `cd ~/chukkys-code/environment` and run this code:
 ```
-make cbcl_setup_all
+make webapp_setup
 ```
-This will set up all of your repos in their appropriate docker containers and takes a while. We're talking about XX minutes! There will be repo specific actions to do for each. They are found below:
-
-####  The Environment
-
-####  The Main App
-
-***
-
-### Database Configuration
-
-#### MySQL
-
-
-***
-
-### Debugging
-
-####  Main App (Xdebug)
-- These instructions are based off of this [documentation](https://www.jetbrains.com/help/phpstorm/configuring-xdebug.html) for the PhpStorm IDE. Steps for other similar IDE's should be intuitive.
-- Make sure the docker "Environment" is already running. Follow the steps in the `Setup Instructions` before continuing here.
-- Open PhpStorm | Preferences | PHP
-  ![PhpStormPrefernces.png](documentation/images/setup/debugging/PhpStormPrefernces.png)
-
-- Click the `...` at the end of CLI Interpreter to open the CLI Interpreter dialog box
-- ![CLI_InterpreterDialog.png](documentation/images/setup/debugging/CLI_InterpreterDialog.png)
-- Find the "Server" input and then find the `New` button and click that to open the new server dialog box
-- ![NewServerViaDocker.png](documentation/images/setup/debugging/NewServerViaDocker.png)
-- The box should already have found the current running docker instance (via Docker for Mac). Make sure the connection is successful, name it and click `OK`.
-- The name of your new Server should populate the Server input in the CLI Interpreters dialog box.
-- Search for the docker compose file of your work environment and select the container for the main app
-- Select `Connect to existing container`
-- Refresh the PHP executable. You should see the correct output info appear. Click `OK`
-- Your info should have already populated the appropriate fields in Preferences. If not do so manually.
-- Open PhpStorm | Preferences | PHP | Debug and follow the instructions in the [documentation](https://www.jetbrains.com/help/phpstorm/configuring-xdebug.html) for Debug settings
-- Add a new PhpStorm configuration by clicking `Edit Configurations` in the Run bar
-- ![RunBar_EditConfigurations.png](documentation/images/setup/debugging/RunBar_EditConfigurations.png)
-- Click the `+` to add a new configuration.
-- ![DebuggerDialog.png](documentation/images/setup/debugging/DebuggerDialog.png)
-- Choose PHP Remote Debug. Name the debugger XDebug (or Bug Finder Extraordinaire - i don't care) and enter `PHPSTORM` AS THE IDE key.
-- Click the `...` to add a new server. Name it, add `host.docker.internal` as the host and enter the value of the `APP_BY_SAVI_WEB_NGINX_PORT` environment variable - default is `8181`
-  ![ServersDialogFromDebugConfigurations.png](documentation/images/setup/debugging/ServersDialogFromDebugConfigurations.png)
-- Click `OK` to close the Servers dialog
-- Click `OK` again.
-- Go to your `index.php` in your IDE and add a breakpoint and `phpinfo()` at the first line
-- ![IndexBreakPoint.png](documentation/images/setup/debugging/IndexBreakPoint.png)
-- Go to your browser at `http://127.0.0.1:8181/` and setup and turn on your favorite debug tool
-  ![BrowserDebugTool.png](documentation/images/setup/debugging/BrowserDebugTool.png)
-- Back in PhpStorm select your debugger run config, make sure it's listening, and start the debugger
-  ![StartDebugger.png](documentation/images/setup/debugging/StartDebugger.png)
-- In your browser, refresh `http://127.0.0.1:8181/`. Your IDE should catch the call at the break point.
-- XDebug is setup
-  ![XDebugSetup.png](documentation/images/setup/debugging/XDebugSetup.png)
-
-## Contribution guidelines ###
-
-* Code review
-* Other guidelines
-
-## Who do I talk to? ###
-
-* Team contact: chukkynze@gmail.com
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+That's it. You can play around with the livewire interface and if you want to reset the project, run ```make webapp_setup``` again

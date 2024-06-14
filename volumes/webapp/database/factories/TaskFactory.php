@@ -23,19 +23,18 @@ class TaskFactory extends Factory
         $startDateUpperBoundNumber = fake()->numberBetween(1,10);
         $startDateUpperBound = '+' . $startDateUpperBoundNumber . ' week';
 
-        $endDateLowerBoundNumber = fake()->numberBetween($startDateUpperBoundNumber + 1,50);
-        $endDateLowerBound = '+' . $endDateLowerBoundNumber . ' week';
+        $dueByDateLowerBoundNumber = fake()->numberBetween($startDateUpperBoundNumber + 1,50);
+        $dueByDateLowerBound = '+' . $dueByDateLowerBoundNumber . ' week';
 
-        $endDateUpperBoundNumber = fake()->numberBetween($endDateLowerBoundNumber + 1,$endDateLowerBoundNumber + 50);
-        $endDateUpperBound = '+' . $endDateUpperBoundNumber . ' week';
+        $dueByDateUpperBoundNumber = fake()->numberBetween($dueByDateLowerBoundNumber + 1,$dueByDateLowerBoundNumber + 50);
+        $dueByDateUpperBound = '+' . $dueByDateUpperBoundNumber . ' week';
 
         return [
             'name' => 'The ' . fake()->jobTitle() . ' must make it ' . fake()->colorName() . '.',
-            //'uuid' => fake()->uuid(),
             'project_id' => Project::factory(),
             'priority' => fake()->numberBetween(1,10),
             'start_dt' => fake()->dateTimeBetween('now', $startDateUpperBound),
-            'end_dt' => fake()->dateTimeBetween($endDateLowerBound, $endDateUpperBound),
+            'due_by_dt' => fake()->dateTimeBetween($dueByDateLowerBound, $dueByDateUpperBound),
             'created_at' => $now,
             'updated_at' => $now,
             'deleted_at' => null,

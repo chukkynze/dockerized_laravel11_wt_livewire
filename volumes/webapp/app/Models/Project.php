@@ -58,7 +58,9 @@ class Project extends Model
         SoftDeletes
         ;
 
+
     protected $table = 'projects';
+
 
     protected static function boot(): void
     {
@@ -72,6 +74,7 @@ class Project extends Model
         });
     }
 
+
     public function getId(): int
     {
         return $this->id;
@@ -81,6 +84,7 @@ class Project extends Model
     {
         return $this->uuid;
     }
+
 
     /**
      * @throws SetNotAllowedException
