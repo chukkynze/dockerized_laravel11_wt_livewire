@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Entities\AppServiceResponse;
 use App\Models\Task;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
@@ -93,6 +94,10 @@ class TaskService
 
             $newModel = new Task;
             $newModel->setName($formData['name']);
+            $newModel->setPriority($formData['priority']);
+            $newModel->setProjectId($formData['project_id']);
+            $newModel->setStartDt(Carbon::parse($formData['start_dt'])->format('Y-m-d h:i:s'));
+            $newModel->setDueByDt(Carbon::parse($formData['due_by_dt'])->format('Y-m-d h:i:s'));
             $newModel->setCreatedAt($now);
             //$newModel->setUpdatedAt($now);
             $newModel->setDeletedAt(null);

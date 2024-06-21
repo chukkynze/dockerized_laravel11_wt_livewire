@@ -27,7 +27,7 @@ class ProjectService
                 true,
                 'Successfully retrieved all project types.',
                 [
-                    'model' => ProjectType::all(),
+                    'models' => ProjectType::all(),
                 ],
                 422
             );
@@ -53,7 +53,7 @@ class ProjectService
                 true,
                 'Successfully retrieved all project statuses.',
                 [
-                    'model' => ProjectStatus::all(),
+                    'models' => ProjectStatus::all(),
                 ],
                 422
             );

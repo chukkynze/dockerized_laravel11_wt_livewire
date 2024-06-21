@@ -95,8 +95,8 @@ class ProjectsDatatable extends Component
                 $this->sortBy,
                 $this->sortDirection
             ),
-            'projectTypes' => $projectService->getAllProjectTypes()->getData()['model'],
-            'projectStatuses' => $projectService->getAllProjectStatuses()->getData()['model'],
+            'projectTypes' => $projectService->getAllProjectTypes()->getData()['models'],
+            'projectStatuses' => $projectService->getAllProjectStatuses()->getData()['models'],
         ]);
     }
 }
