@@ -3,8 +3,6 @@
 namespace App\Livewire;
 
 use App\Livewire\Forms\ProjectCreateForm;
-use App\Models\ProjectStatus;
-use App\Models\ProjectType;
 use App\Services\ProjectService;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -35,11 +33,11 @@ class ProjectCreate extends Component
         ]);
     }
 
-    public function render(): Factory|Application|View|\Illuminate\Contracts\Foundation\Application
+    public function render(ProjectService $projectService): Factory|Application|View|\Illuminate\Contracts\Foundation\Application
     {
         return view('livewire.project-create', [
-            'projectTypes' => ProjectType::all(),
-            'projectStatuses' => ProjectStatus::all(),
+            'projectTypes' => $projectService->getAllProjectTypes()->getData()['model'],
+            'projectStatuses' => $projectService->getAllProjectStatuses()->getData()['model'],
         ]);
     }
 }

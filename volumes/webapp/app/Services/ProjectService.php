@@ -99,7 +99,7 @@ class ProjectService
                 true,
                 'Successfully retrieved the project identified by uuid: ' . $uuid,
                 [
-                    'model' => Project::whereUuid($uuid)->get(),
+                    'model' => Project::whereUuid($uuid)->firstOrFail(),
                 ],
                 422
             );
@@ -112,6 +112,34 @@ class ProjectService
                 'Could not retrieve the project identified by uuid: ' . $uuid,
                 [
                     'args' => ['uuid' => $uuid],
+                ],
+                422
+            );
+        }
+
+        return $output;
+    }
+
+    public function getAllProjects(): AppServiceResponse
+    {
+        try {
+            $output = serviceResponse(
+                true,
+                'Successfully retrieved all projects.',
+                [
+                    'models' => Project::all(),
+                ],
+                422
+            );
+        }
+        catch (Exception $exception) {
+            Log::error("An attempt to retrieve all projects resulted in this exception message: {$exception->getMessage()}");
+
+            $output = serviceResponse(
+                FALSE,
+                'Could not retrieve all projects',
+                [
+                    'args' => [],
                 ],
                 422
             );

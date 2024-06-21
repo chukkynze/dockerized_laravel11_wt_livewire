@@ -3,7 +3,11 @@
 namespace App\Livewire;
 
 use App\Livewire\Forms\TaskCreateForm;
+use App\Services\ProjectService;
 use App\Services\TaskService;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
@@ -30,8 +34,10 @@ class TaskCreate extends Component
         ]);
     }
 
-    public function render()
+    public function render(ProjectService $projectService): View|Application|Factory|\Illuminate\View\View|\Illuminate\Contracts\Foundation\Application
     {
-        return view('livewire.task-create');
+        return view('livewire.task-create', [
+            'projects' => $projectService->getAllProjects()->getData()['models']
+        ]);
     }
 }
