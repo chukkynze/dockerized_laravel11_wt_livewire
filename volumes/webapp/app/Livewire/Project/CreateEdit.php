@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Project;
 
 use App\Models\Project;
 use App\Services\ProjectService;
@@ -12,7 +12,7 @@ use Illuminate\Support\Collection;
 use Livewire\Component;
 use Livewire\Features\SupportRedirects\Redirector;
 
-class ProjectCreateEditForm extends Component
+class CreateEdit extends Component
 {
     public Project $project;
 
@@ -32,6 +32,11 @@ class ProjectCreateEditForm extends Component
     public function mount(ProjectService $projectService, Project $project): void
     {
         $this->project = $project;
+
+        $this->name = ($this->project->getUuid() ? $this->project->getName() : $this->name);
+        $this->type_id = ($this->project->getUuid() ? $this->project->getTypeId() : $this->type_id);
+        $this->status_id = ($this->project->getUuid() ? $this->project->getStatusId() : $this->status_id);
+
         $this->projectTypes = $projectService->getAllProjectTypes()->getData()['models'];
         $this->projectStatuses = $projectService->getAllProjectStatuses()->getData()['models'];
     }
@@ -72,11 +77,15 @@ class ProjectCreateEditForm extends Component
      * @param ProjectService $projectService
      * @return RedirectResponse|Redirector
      */
-    public function submitForm(ProjectService $projectService): RedirectResponse|Redirector
+    public function create(ProjectService $projectService): RedirectResponse|Redirector
     {
         $this->validate();
 
-        if (false !== $projectService->createProject($this->all())) {
+        if (false !== $projectService->createProject(
+                $this->all()['name'],
+                $this->all()['status_id'],
+                $this->all()['type_id'],
+            )->getStatus()) {
             session()->flash('success', "Your project, \"$this->name\", has been created.");
         }
         else {
@@ -88,11 +97,36 @@ class ProjectCreateEditForm extends Component
 
 
     /**
+     * @param ProjectService $projectService
+     * @return RedirectResponse|Redirector
+     */
+    public function update(ProjectService $projectService): RedirectResponse|Redirector
+    {
+        $this->validate();
+
+        if (false !== $projectService->updateProject(
+                $this->project->getUuid(),
+                $this->all()['name'],
+                $this->all()['status_id'],
+                $this->all()['type_id'],
+            )->getStatus()) {
+            session()->flash('success', "Your project, \"$this->name\", has been updated.");
+        }
+        else {
+            session()->flash('failure', "Your project, \"$this->name\", was not updated.");
+        }
+
+        return redirect()->route('projects.listing');
+    }
+
+
+    /**
      * @return View|Application|Factory|\Illuminate\View\View|\Illuminate\Contracts\Foundation\Application
      */
     public function render(): View|Application|Factory|\Illuminate\View\View|\Illuminate\Contracts\Foundation\Application
     {
-        return view('livewire.project-create-edit-form',[
+        return view('livewire.project.create-edit',[
+            'project' => $this->project,
             'projectTypes' => $this->projectTypes,
             'projectStatuses' => $this->projectStatuses,
         ]);

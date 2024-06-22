@@ -127,7 +127,8 @@
                             <tr wire:key="{{ $project->getUuid() }}" class="border-b dark:border-gray-700">
                                 <th scope="row"
                                     class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {{ $project->getName() }}</th>
+                                    {{ $project->getName() }}
+                                </th>
                                 <td class="px-4 py-3 items-center">{{ $project->type->getDisplayName() }}</td>
                                 @if($project->status->getDisplayName() == 'Done')
                                     <td class="px-4 py-3 items-center text-green-500">

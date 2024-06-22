@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Task;
 
 use App\Models\Task;
 use App\Rules\DueDateMustBeAfterStartDate;
@@ -14,7 +14,7 @@ use Illuminate\Support\Collection;
 use Livewire\Component;
 use Livewire\Features\SupportRedirects\Redirector;
 
-class TaskCreateEditForm extends Component
+class CreateEdit extends Component
 {
     public Task $task;
 
@@ -35,6 +35,13 @@ class TaskCreateEditForm extends Component
     public function mount(ProjectService $projectService, Task $task): void
     {
         $this->task = $task;
+
+        $this->name = ($this->task->getUuid() ? $this->task->getName() : $this->name);
+        $this->priority = ($this->task->getUuid() ? $this->task->getPriority() : $this->priority);
+        $this->start_dt = ($this->task->getUuid() ? $this->task->getStartDt() : $this->start_dt);
+        $this->due_by_dt = ($this->task->getUuid() ? $this->task->getDueByDt() : $this->due_by_dt);
+        $this->project_id = ($this->task->getUuid() ? $this->task->getProjectId() : $this->project_id);
+
         $this->allProjects = $projectService->getAllProjects()->getData()['models'];
     }
 
@@ -82,7 +89,7 @@ class TaskCreateEditForm extends Component
      * @param TaskService $taskService
      * @return RedirectResponse|Redirector
      */
-    public function submitForm(TaskService $taskService): RedirectResponse|Redirector
+    public function create(TaskService $taskService): RedirectResponse|Redirector
     {
         $this->validate();
 
@@ -98,11 +105,31 @@ class TaskCreateEditForm extends Component
 
 
     /**
+     * @param TaskService $taskService
+     * @return RedirectResponse|Redirector
+     */
+    public function update(TaskService $taskService): RedirectResponse|Redirector
+    {
+        $this->validate();
+
+        if (false !== $taskService->createTask($this->all())) {
+            session()->flash('success', "Your task, \"$this->name\", has been updated.");
+        }
+        else {
+            session()->flash('failure', "Your task, \"$this->name\", was not updated.");
+        }
+
+        return redirect()->route('tasks.listing');
+    }
+
+
+    /**
      * @return View|Application|Factory|\Illuminate\View\View|\Illuminate\Contracts\Foundation\Application
      */
     public function render(): View|Application|Factory|\Illuminate\View\View|\Illuminate\Contracts\Foundation\Application
     {
         return view('livewire.task-create-edit-form', [
+            'task' => $this->task,
             'projects' => $this->allProjects
         ]);
     }

@@ -11,19 +11,15 @@ if (!function_exists('serviceResponse')) {
      * @param bool $status
      * @param string $message
      * @param array $data
-     * @param int $suggestedHttpResponseCode
      * @param array $errors
-     * @param string $requestHistoryKey
      *
      * @return AppServiceResponse
      */
     function serviceResponse(
         bool   $status,
         string $message,
-        array  $data,
-        int    $suggestedHttpResponseCode,
+        array  $data=[],
         array  $errors=[],
-        string $requestHistoryKey=''
     ): AppServiceResponse
     {
         return new AppServiceResponse(
@@ -31,8 +27,6 @@ if (!function_exists('serviceResponse')) {
             $message,
             $data,
             $errors,
-            $suggestedHttpResponseCode,
-            $requestHistoryKey
         );
     }
 }

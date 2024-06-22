@@ -39,7 +39,8 @@
             "App\\Providers\\": "app/Providers/",
             "App\\Http\\Controllers\\": "app/Http/Controllers",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
+            "Database\\Seeders\\": "database/seeders/",
+            "Tests\\": "tests/"
         }
     },
     "autoload-dev": {

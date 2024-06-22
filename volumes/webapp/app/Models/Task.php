@@ -16,7 +16,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
 /**
- *
+ * 
  *
  * @property int $id
  * @property string $uuid
@@ -28,8 +28,8 @@ use Illuminate\Support\Str;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- * @property-read Project $project
- * @method static TaskFactory factory($count = null, $state = [])
+ * @property-read \App\Models\Project $project
+ * @method static \Database\Factories\TaskFactory factory($count = null, $state = [])
  * @method static Builder|Task newModelQuery()
  * @method static Builder|Task newQuery()
  * @method static Builder|Task onlyTrashed()
@@ -47,7 +47,6 @@ use Illuminate\Support\Str;
  * @method static Builder|Task whereUuid($value)
  * @method static Builder|Task withTrashed()
  * @method static Builder|Task withoutTrashed()
- * @method static Builder|Project paginate($number)
  * @mixin Eloquent
  */
 class Task extends Model

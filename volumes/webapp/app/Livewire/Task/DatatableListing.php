@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Task;
 
-use App\Services\ProjectService;
 use App\Services\TaskService;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class TasksDatatable extends Component
+class DatatableListing extends Component
 {
     use WithPagination;
 
@@ -44,9 +45,9 @@ class TasksDatatable extends Component
         $this->sortDirection = 'desc';
     }
 
-    public function edit(string $uuid): void
+    public function edit(string $uuid): RedirectResponse|\Illuminate\Contracts\Foundation\Application|Redirector|Application
     {
-        dd($uuid);
+        return redirect("/tasks/$uuid/edit");
     }
 
     public function markDeleted(TaskService $taskService, string $uuid): void

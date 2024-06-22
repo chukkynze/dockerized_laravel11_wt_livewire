@@ -13,7 +13,7 @@ alias gs="git status"
 alias gb="git branch"
 
 # Composer
-alias cpsr-da=composer dump-autoload
+alias cp-da="composer dump-autoload"
 
 # Laravel
 alias lvrts="(cd /var/www/html && php artisan route:list)"

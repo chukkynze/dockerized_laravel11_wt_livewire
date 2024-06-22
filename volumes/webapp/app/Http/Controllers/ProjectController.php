@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Services\ProjectService;
 
 class ProjectController extends Controller
 {
@@ -11,7 +11,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        //
+        return view('project.datatable-listing');
     }
 
     /**
@@ -19,15 +19,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+        return view('project.create');
     }
 
     /**
@@ -41,32 +33,10 @@ class ProjectController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(ProjectService $projectService, string $uuid)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Mark the specified resource as deleted.
-     */
-    public function delete(string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return view('project.edit', [
+            'project' => $projectService->getProject($uuid)->getData()['model'],
+        ]);
     }
 }
