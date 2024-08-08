@@ -14,9 +14,9 @@ then
     echo ""
 
     # shellcheck disable=SC2164
-    cd /var/www/html
-	chown -R www-data:www-data /var/www/html
-    chmod -R ugo+rwx /var/www/html
+#    cd /var/www/html
+#	chown -R www-data:www-data /var/www/html
+#    chmod -R ugo+rwx /var/www/html
 
 	php artisan down
 	php artisan cache:clear
@@ -52,10 +52,6 @@ then
     php artisan queue:restart
 
 	php artisan up
-
-    ./updt_xdebug.sh
-
-    service nginx start
 
     echo ""
     echo ""
