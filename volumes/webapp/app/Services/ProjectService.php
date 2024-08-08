@@ -294,9 +294,10 @@ class ProjectService
                 $typeId,
                 $statusId,
             );
+
             $output = serviceResponse(
                 true,
-                "Successfully created a new project.",
+                "Successfully updated the project identified by uuid: $identifier.",
                 [
                     'model' => $updatedModel,
                 ],

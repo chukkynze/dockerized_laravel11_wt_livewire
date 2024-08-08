@@ -23,8 +23,8 @@ use Illuminate\Support\Str;
  * @property int $project_id
  * @property string $name
  * @property int $priority
- * @property-read string $start_dt
- * @property-read string $due_by_dt
+ * @property string $start_dt
+ * @property string $due_by_dt
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
