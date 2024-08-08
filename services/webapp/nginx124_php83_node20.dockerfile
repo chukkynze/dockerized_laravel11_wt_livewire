@@ -1,10 +1,6 @@
-FROM phusion/baseimage:jammy-1.0.2
+FROM ubuntu:22.04
 
-MAINTAINER Chukwuma J. Nze
-
-RUN apt-get update                  \
-    && apt-get install -y locales   \
-    && locale-gen en_US.UTF-8
+LABEL maintainer="Chukwuma J. Nze"
 
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
@@ -17,6 +13,17 @@ ENV DEBIAN_FRONTEND=noninteractive
 ARG XDEBUG_HOST_IP
 ARG GIT_USERNAME
 ARG GIT_EMAIL
+
+# Set the user for the container
+#RUN set -xe;
+#RUN groupadd -g ${CONTAINER_GID} ${CONTAINER_USERGROUP}
+#RUN useradd -u ${CONTAINER_UID} -g ${CONTAINER_GID} -m ${CONTAINER_USER} -G root,www-data
+#RUN echo "${CONTAINER_USERGROUP} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+#RUN usermod -aG sudo ${CONTAINER_USER}
+
+RUN apt-get update
+RUN apt-get install -y locales
+RUN locale-gen en_US.UTF-8
 
 RUN apt-get update                                  \
     && apt-get install -y gnupg tzdata              \
@@ -42,6 +49,7 @@ RUN apt-get update                      \
        nginx                            \
        pkg-config                       \
        supervisor                       \
+       sudo                             \
        software-properties-common       \
        unzip                            \
        vim                              \
@@ -85,11 +93,11 @@ RUN apt-get update                      \
        php8.3-http      \
        php8.3-imap      \
        php8.3-intl      \
-       php-json      \
+       php-json         \
        php8.3-mbstring  \
        php8.3-mongodb   \
        php8.3-mysql     \
-       php8.3-opcache  \
+       php8.3-opcache   \
        php8.3-pdo       \
        php8.3-raphf     \
        php8.3-readline  \
@@ -109,35 +117,30 @@ RUN apt-get update                      \
     && apt-get -y autoremove                                    \
     && apt-get clean                                            \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*            \
-    && ln -sf /dev/stdout /var/log/nginx/access.log             \
-    && ln -sf /dev/stderr /var/log/nginx/error.log
+    && update-alternatives --set php /usr/bin/php8.3
 
-RUN update-alternatives --set php /usr/bin/php8.3
-#RUN pecl install swoole
+WORKDIR /var/log
+RUN mkdir -p nginx
+RUN ln -sf /dev/stdout /var/log/nginx_access.log
+RUN ln -sf /dev/stderr /var/log/nginx_error.log
 
-COPY default.conf                                           /etc/nginx/sites-available/default
-COPY nginx.conf                                             /etc/nginx/nginx.conf
-COPY php-cli.ini                                            /etc/php/8.3/cli/php.ini
-COPY php-fpm.ini                                            /etc/php/8.3/fpm/php.ini
-COPY supervisord.conf                                       /etc/supervisor/supervisord.conf
-COPY www.conf                                               /etc/php/8.3/fpm/pool.d/www.conf
-COPY xdebug3.ini                                            /etc/php/8.3/mods-available/xdebug.ini
-COPY aliases.bashrc                                         /root/aliases.bashrc
+COPY ./services/webapp/default.conf                   /etc/nginx/sites-available/default
+COPY ./services/webapp/nginx.conf                     /etc/nginx/nginx.conf
+COPY ./services/webapp/php-cli.ini                    /etc/php/8.3/cli/php.ini
+COPY ./services/webapp/php-fpm.ini                    /etc/php/8.3/fpm/php.ini
+COPY ./services/webapp/supervisord.conf               /etc/supervisor/supervisord.conf
+COPY ./services/webapp/www.conf                       /etc/php/8.3/fpm/pool.d/www.conf
+COPY ./services/webapp/xdebug3.ini                    /etc/php/8.3/mods-available/xdebug.ini
+COPY ./services/webapp/aliases.bashrc                 /root/aliases.bashrc
 
 RUN cat /root/aliases.bashrc >> /root/.bashrc
 
-RUN git config --global user.name $GIT_USERNAME   \
-    && git config --global user.email $GIT_EMAIL  \
-    && mkdir -p /etc/nginx/certs                  \
+COPY --chown=www-data:www-data ./volumes/webapp /var/www/html
+
+RUN git config --global user.name ${GIT_USERNAME}   \
+    && git config --global user.email ${GIT_EMAIL}  \
+    && mkdir -p /etc/nginx/certs                    \
     && mkdir -p /var/www/html/storage/logs
-
-RUN set -xe; \
-    groupadd -g 1000 chukkynze && \
-    useradd -u 1000 -g chukkynze -m chukkynze -G docker_env
-
-RUN echo "chukkynze ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-
-RUN chown -R www-data:www-data /var/www/html
 
 ## Install Node 20 and NPM
 RUN curl -sL https://deb.nodesource.com/setup_20.x -o nodesource_setup.sh

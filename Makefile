@@ -1,14 +1,16 @@
 include .env.docker-compose
 
+# Core Environment Commands
+###########################
+
+# Runs before every command to get the most recent configs
+get_configs:
+	cp -a .env.docker-compose ./scripts/makefile/config.sh
+
 # Docker Commands
 ####################################################
-clean:
-	@echo 'Status: Docker'
-	./workflow.sh docker status
-	@echo 'Clean: MySQL and Docker'
-	./workflow.sh docker clean containers
-	./workflow.sh docker clean images
-	./workflow.sh docker clean all
+clean: status
+	./scripts/makefile/clean_docker_all.sh
 
 clean_mysql:
 	@echo 'Clean: MySQL'
@@ -21,33 +23,19 @@ clean_docker:
 	./workflow.sh docker clean images
 	./workflow.sh docker clean all
 
-status:
-	./workflow.sh docker status
+status: get_configs
+	./scripts/makefile/status.sh
 
-boot:
-	@echo 'Bring Up Docker Environment'
-	chmod ugo+x workflow.sh
-	chmod 0444 ./volumes/data/mysql/config/mysql.cnf
-	./workflow.sh docker config
-	./workflow.sh docker up
+boot: get_configs
+	./scripts/makefile/boot.sh
 
-boot_bg:
-	@echo 'Bring Up Docker Environment Silently'
-	chmod ugo+x workflow.sh
-	chmod 0444 ./volumes/data/mysql/config/mysql.cnf
-	./workflow.sh docker config
-	./workflow.sh docker up-d
+boot_bg: get_configs
+	./scripts/makefile/boot.sh silent
 
-boot_clean: clean_mysql clean boot
+boot_clean: clean boot
 
-boot_bg_clean: clean_mysql clean boot_bg
+boot_bg_clean: clean boot_bg
 
-
-# Host Device Commands
-####################################################
-test:
-	@echo 'Testing Environment'
-	./workflow.sh tasks test_env
 
 
 # Access Commands
@@ -80,84 +68,7 @@ fresh_install:
 	touch volumes/workspace/.gitkeep
 	@printf '\n'
 	@echo '==============================================='
-	@echo 'DevOps install.'
-	@echo '==============================================='
-	@printf '\n'
-	#git clone git@bitbucket.org:teamsavi/devops.git devops
-	#@chown -R ${DEVICE_HOST_USERNAME}:staff devops
-	@printf '\n'
-	@echo '==============================================='
-	@echo 'Emp Admin App preparatory install.'
-	@echo '==============================================='
-	@printf '\n'
-	mkdir -p volumes/workspace/projects/AppLaunchMay2024/EmployeeAdmin/web
-	git clone git@bitbucket.org:ogeleiq/emp_admin_web.git volumes/workspace/projects/AppLaunchMay2024/EmployeeAdmin/web/.
-	@printf '\n'
-	@echo 'Copying backup git and idea folder if they exist'
-	cp -a volumes/workspace_bkp/projects/AppLaunchMay2024/EmployeeAdmin/web/.git/. volumes/workspace/projects/AppLaunchMay2024/EmployeeAdmin/web/.git/  || true
-	cp -a volumes/workspace_bkp/projects/AppLaunchMay2024/EmployeeAdmin/web/.idea/. volumes/workspace/projects/AppLaunchMay2024/EmployeeAdmin/web/.idea/  || true
-	@echo 'Creating env files and using potentially existing backup'
-	@printf '\n'
-	cp volumes/workspace/projects/AppLaunchMay2024/EmployeeAdmin/web/.env.cubicle volumes/workspace/projects/AppLaunchMay2024/EmployeeAdmin/web/.env  || true
-	cp volumes/workspace_bkp/projects/AppLaunchMay2024/EmployeeAdmin/web/.env volumes/workspace/projects/AppLaunchMay2024/EmployeeAdmin/web/.env  || true
-	chown -R ${DEVICE_HOST_USERNAME}:staff volumes/workspace/projects/AppLaunchMay2024/EmployeeAdmin/web
-	@printf '\n'
-	@echo '==============================================='
 	@echo 'Environment: Fresh Install complete.'
 	@echo '==============================================='
 	@echo '${DEVICE_USER_FIRST_NAME}, you can now configure your env variables in .env.docker-compose'
 	@printf '\n\n'
-
-# After all configs have been gathered
-cbcl_setup:
-	@echo 'Starting setup of properly configured repos'
-
-
-cbcl_setup_all: cbcl_setup webapp_setup
-
-
-# Task commands
-####################################################
-
-# todo: who's listening on what port: netstat -pna | grep 80
-
-refresh_all:
-	@echo 'Refresh Environment Data'
-#	./workflow.sh setup all
-#	./workflow.sh npm all
-#	./workflow.sh cdn setup all
-#	./workflow.sh permissions all
-#	@echo 'Creating certs'
-#	./workflow.sh certs create admin
-#	./workflow.sh certs create client
-#	./workflow.sh certs create pkg
-
-
-## App
-app_tail_all:
-	@echo 'Tail All Logs'
-	./workflow.sh tasks app tail_all
-
-app_create_certs:
-	@echo 'Create fake ssl certs'
-	./workflow.sh tasks app certs_create
-
-app_delete_certs:
-	@echo 'Delete fake ssl certs'
-	./workflow.sh tasks app certs_delete
-
-
-
-
-## Git
-app_prep_git:
-	@echo 'Applying webapp git policy'
-	cd volumes/workspace/projects/AppLaunchMay2024/EmployeeAdmin/web; \
-    git config core.fileMode false
-
-
-app_git_status:
-	@echo 'Applying webapp git policy'
-	cd volumes/workspace/projects/AppLaunchMay2024/EmployeeAdmin/web; \
-    git status
-
