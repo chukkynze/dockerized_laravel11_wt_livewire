@@ -1,0 +1,27 @@
+DEVICE_USER_FIRST_NAME='Chukky'
+DEVICE_USER_FULL_NAME='Chukky Nze'
+DEVICE_HOST_USERNAME=academystack
+DEVICE_HOST_UID=1000
+DEVICE_HOST_GID=1000
+DEVICE_HOST_IP=host.docker.internal
+
+DEFAULT_CURRENT_OS="linux"
+DEFAULT_CURRENT_OS_FLAVOR="ubuntu"
+DEFAULT_CURRENT_OS_FLAVOR_VERSION="22.04"
+DEFAULT_CURRENT_OS_FLAVOR_BIT="64"
+DEFAULT_DOCKER_COMPOSE_ENV_FILE=".env.docker-compose"
+DEFAULT_FOLDER_PATH=/home/academystack/PhpstormProjects/work/OgeleIQ/IoT/academystack/technology/ecosystem/docker/environment/v0_2024_03_16/volumes/workspace/projects/Nkuzim/PHP/docker_laravel_livewire_api
+
+GIT_USERNAME="Chukky Nze"
+GIT_EMAIL=chukkynze@academystack.com
+
+WEBAPP_NGINX_PORT=8080
+WEBAPP_NGINX_SSL_PORT=4430
+
+REDIS_PORT=6389
+
+MYSQLDB_ROOT_PASSWORD=secret123
+MYSQLDB_DATABASE=webappdb
+MYSQLDB_USER=dbuser
+MYSQLDB_PASSWORD=secret123
+MYSQLDB_PORT=3306
